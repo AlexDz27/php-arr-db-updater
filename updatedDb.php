@@ -1,6 +1,6 @@
 <?php
 
 return [
-  'currentPriceList' => ,
+  'currentPriceList' => null,
   'someOther' => 12.13,
 ];

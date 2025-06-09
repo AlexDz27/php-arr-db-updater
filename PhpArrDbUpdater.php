@@ -10,7 +10,9 @@ class PhpArrDbUpdater {
       $newDbContents .= "return [\n";
     }
     foreach ($updatedDb as $key => $value) {
-      if ($value === null || isNumber($value)) {
+      if ($value === null) {
+        $newDbContents .= "  '$key' => null,\n";
+      } else if (isNumber($value)) {
         $newDbContents .= "  '$key' => $value,\n";
       } else if (is_string($value)) {
         $newDbContents .= "  '$key' => '$value',\n";
