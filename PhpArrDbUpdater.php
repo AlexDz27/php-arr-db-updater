@@ -1,9 +1,8 @@
 <?php
 
-// TODO: need to count how many spaces when dealing with arrays
-
 class PhpArrDbUpdater {
-  public function update($updatedDb, $path, $isInnerUse = false) {
+  public function update($updatedDb, $path, $isInnerUse = false, $spaces = '  ') {
+    $newDbContents = '';
     if (!$isInnerUse) {
       $newDbContents = '<?php' . "\n";
       $newDbContents .= "\n";
@@ -11,16 +10,29 @@ class PhpArrDbUpdater {
     }
     foreach ($updatedDb as $key => $value) {
       if ($value === null) {
-        $newDbContents .= "  '$key' => null,\n";
+        $newDbContents .= "$spaces'$key' => null,\n";
+      } else if (is_bool($value)) {
+        if ($value === false) {
+          $newDbContents .= "$spaces'$key' => false,\n";
+        } else if ($value === true) {
+          $newDbContents .= "$spaces'$key' => true,\n";
+        }
       } else if (isNumber($value)) {
-        $newDbContents .= "  '$key' => $value,\n";
+        $newDbContents .= "$spaces'$key' => $value,\n";
       } else if (is_string($value)) {
-        $newDbContents .= "  '$key' => '$value',\n";
+        $newDbContents .= "$spaces'$key' => '$value',\n";
       } else if (is_array($value)) {
-        $newDbContents .= "  '$key' => [\n";
-        $newDbContents .= $this->update($value, $path, true);
-        $newDbContents .= "],\n";
+        if (empty($value)) {
+          $newDbContents .= "$spaces'$key' => [],\n";
+        } else {
+          $newDbContents .= "$spaces'$key' => [\n";
+          $spaces .= '  ';
+          $newDbContents .= $this->update($value, $path, true, $spaces);
+          $spaces = substr($spaces, 0, -2);
+          $newDbContents .= "$spaces],\n";
+        }
       } else {
+        // var_dump($value);
         throw new Exception('Undefined type');
       }
     }
