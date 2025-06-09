@@ -1,7 +1,7 @@
 <?php
 
-class PhpArrDbUpdater {
-  public function update($updatedDb, $path, $isInnerUse = false, $spaces = '  ') {
+class PhpArrDbWriter {
+  public function write($updatedDb, $path, $isInnerUse = false, $spaces = '  ') {
     $newDbContents = '';
     if (!$isInnerUse) {
       $newDbContents = '<?php' . "\n";

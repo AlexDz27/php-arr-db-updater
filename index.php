@@ -3,7 +3,7 @@
 // $db = require 'updatedDb.php';
 // var_dump($db);
 
-require 'PhpArrDbUpdater.php';
+require 'PhpArrDbWriter.php';
 
 $db = require 'db.php';
 $db['currentPriceList'] = null;
@@ -28,6 +28,6 @@ $db['products'] = [
   ]
 ];
 
-$dbUpdater = new PhpArrDbUpdater();
-$dbUpdater->update($db, 'updatedDb.php');
+$dbWriter = new PhpArrDbWriter();
+$dbWriter->write($db, 'updatedDb.php');
 var_dump($db);  // TODO: check the file itself, not just here
